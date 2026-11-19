@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AK47 : le bot Discord qui modère, protège et anime ton serveur</title>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;800&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#fbfbf8;--ink:#222;--mute:#5d5d66;--yel:#ffd84a;--blue:#3a58f5;--pink:#ff8fc0;--line:#222}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.05rem/1.65 'Public Sans',system-ui,sans-serif}
+a{color:var(--blue);font-weight:600}
+h1,h2,h3{font-family:Unbounded,'Public Sans',sans-serif;margin:0;line-height:1.15}
+.w{max-width:60rem;margin:0 auto;padding:0 1.4rem}
+.top{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding:1.1rem 0}
+.top b{font:800 1.3rem Unbounded,sans-serif}
+.top nav a{margin-left:1.2rem;color:var(--ink);text-decoration:none;font-weight:600;font-size:.95rem}
+.top nav a:hover{text-decoration:underline}.top nav a.join{background:var(--ink);color:#fff;padding:.35rem .8rem;border-radius:3px}.top nav a.join:hover{text-decoration:none;background:var(--blue)}
+.btn{display:inline-block;margin-top:1.3rem;background:var(--ink);color:#fff;text-decoration:none;padding:.7rem 1.2rem;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--blue)}
+.btn:hover{background:var(--blue)}
+.hero{background:var(--yel);border-block:2px solid var(--line)}
+.hero .w{display:grid;grid-template-columns:1.1fr .9fr;gap:2.5rem;align-items:center;padding-block:3.5rem}
+.hero h1{font-size:clamp(2rem,5vw,3.3rem);font-weight:800}
+.hero p{font-size:1.15rem;margin:1.2rem 0 0;max-width:30em}
+.hero small{display:block;margin-top:1rem;font-weight:600}.hero p+.btn{margin-top:1.3rem}
+code{font:600 .9em ui-monospace,Menlo,Consolas,monospace;background:rgba(34,34,34,.09);padding:.08em .38em;border-radius:3px}
+.dc{background:#fff;border:2px solid var(--line);box-shadow:6px 6px 0 var(--line);padding:1rem;font-size:.94rem;line-height:1.5}
+.dc .m{margin-bottom:.9rem}.dc .m:last-child{margin:0}
+.dc .n{font-weight:800}.dc .n i{font-style:normal;font-weight:400;color:var(--mute);font-size:.82rem;margin-left:.3rem}
+.emb{border-left:5px solid var(--blue);background:#f0f1fb;padding:.5rem .75rem;margin-top:.3rem}
+.emb.r{border-color:#e0405f;background:#fdeef0}.emb.g{border-color:#1f9d55;background:#ecf8f0}
+.emb small{display:block;color:var(--mute)}
+.bar{font-family:ui-monospace,monospace;letter-spacing:-.06em;color:var(--blue)}
+section{padding:4rem 0 0}
+h2{font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:800;margin-bottom:1rem}
+h3{font-size:1rem;font-weight:600}
+p{margin:.7rem 0}
+.lead{font-size:1.15rem;max-width:36em}
+.row{display:grid;grid-template-columns:12rem 1fr;gap:1.5rem;padding:1.1rem 0;border-top:2px solid var(--line)}
+.row:last-child{border-bottom:2px solid var(--line)}
+.row p{margin:0 0 .5rem}.row p:last-child{margin:0}
+.steps{list-style:none;padding:0;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:3rem 1fr;margin:1.1rem 0}
+.steps li::before{content:counter(s);font:800 1.6rem Unbounded,sans-serif;color:var(--blue)}
+pre{background:#fff;border:2px solid var(--line);padding:.8rem 1rem;overflow-x:auto;font:600 .9rem/1.55 ui-monospace,Menlo,monospace;margin:.9rem 0;box-shadow:4px 4px 0 var(--pink)}
+.warn{background:var(--pink);border:2px solid var(--line);padding:.8rem 1rem;margin:1.2rem 0;font-weight:600}
+ul{padding-left:1.2rem}li{margin:.35rem 0}
+details{border-top:2px solid var(--line);padding:.8rem 0}
+details:last-of-type{border-bottom:2px solid var(--line)}
+summary{cursor:pointer;font-weight:800}
+details p{margin:.5rem 0 0}
+.find input{width:100%;font:inherit;padding:.7rem .9rem;border:2px solid var(--line);background:#fff;margin-top:.5rem}
+.find div{margin:.7rem 0}
+.find button{font:inherit;font-weight:600;font-size:.92rem;background:none;border:0;color:var(--mute);cursor:pointer;padding:.15rem .7rem .15rem 0}
+.find button[aria-pressed=true]{color:var(--ink);text-decoration:underline;text-decoration-thickness:3px;text-decoration-color:var(--yel);text-underline-offset:4px}
+#out{display:flex;flex-wrap:wrap;gap:.45rem}
+#out span{border:2px solid var(--line);background:#fff;padding:.1rem .55rem;font:600 .9rem ui-monospace,Menlo,monospace}
+footer{margin-top:5rem;background:var(--ink);color:#e9e9e4;padding:2rem 0}
+footer code{background:rgba(255,255,255,.14)}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+@media(max-width:780px){.hero .w{grid-template-columns:1fr}.row{grid-template-columns:1fr;gap:.4rem}.top nav a{margin:0 1rem 0 0}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="w top"><b>AK47</b><nav><a href="#installer">Installer</a><a href="#fonctions">Fonctions</a><a href="#faq">Questions</a><a href="#commandes">Commandes</a><a class="join" href="https://discord.gg/ak47bot">Rejoindre le Discord</a></nav></div>
+
+<div class="hero"><div class="w">
+<div>
+<h1>Le bot qui modère pendant que tu dors.</h1>
+<p>AK47 gère un serveur Discord de A à Z : sanctions, protection contre les raids, tickets, giveaways, musique, rôles qui se donnent tout seuls. En français, avec des panneaux à boutons.</p>
+<a class="btn" href="https://discord.gg/ak47bot">Rejoindre le Discord</a><small>Préfixe des commandes : <code>+</code> · Liste complète : <code>+help</code> · Fait par Bazilik</small>
+</div>
+<div class="dc" aria-label="Exemple de messages du bot">
+<div class="m"><div class="n">Sam<i>modérateur</i></div><code>+warn @Tom insultes en vocal</code></div>
+<div class="m"><div class="n">AK47<i>bot</i></div><div class="emb r"><b>Avertissement</b><br>@Tom a reçu un warn.<small>Raison : insultes en vocal</small></div></div>
+<div class="m"><div class="n">AK47<i>bot</i></div><div class="emb g"><b>Antiraid</b><br>14 arrivées en 10 secondes : serveur verrouillé.</div></div>
+</div>
+</div></div>
+
+<main class="w">
+
+<section id="installer">
+<h2>Installer en quatre étapes</h2>
+<ol class="steps">
+<li><div><b>Invite le bot.</b> Donne-lui les permissions Gérer les rôles, Bannir, Expulser, Gérer les salons et Gérer les messages.</div></li>
+<li><div><b>Place son rôle haut.</b> Dans les paramètres du serveur, fais glisser le rôle du bot <u>au-dessus</u> de tous ceux qu'il doit donner, retirer ou sanctionner.</div></li>
+<li><div><b>Tape <code>+help</code>.</b> Les commandes sont rangées par catégorie. Si <code>+</code> est pris par un autre bot, change-le avec <code>+prefix</code>.</div></li>
+<li><div><b>Allume ce dont tu as besoin.</b> Rien ne tourne tant que tu ne l'as pas activé : logs avec <code>+setuplogs</code>, bienvenue avec <code>+setwelcome</code>, apparence avec <code>+settings</code>.</div></li>
+</ol>
+<p class="warn">Le bot ne peut pas toucher un rôle placé plus haut que le sien : c'est la cause numéro un des « il ne fait rien ». Vérifie toujours l'étape 2 en premier.</p>
+</section>
+
+<section id="fonctions">
+<h2>Ce que le bot fait</h2>
+<p class="lead">Chaque fonction a sa commande de réglage, qui ouvre un panneau. Voici ce que chacune apporte en pratique.</p>
+
+<div class="row"><h3>Modération</h3><div>
+<p><code>+ban</code> <code>+kick</code> <code>+mute</code> <code>+softban</code> <code>+warn</code> et leurs contraires. Chaque sanction est gardée dans l'historique du membre avec le modérateur et la raison : <code>+warns</code>, <code>+history</code> et <code>+case</code> les retrouvent des mois après.</p>
+<p><code>+clear 50</code> supprime des messages en masse, <code>+purgeuser</code> ceux d'un seul membre. <code>+derank</code> retire tous les rôles d'un membre, <code>+rerank</code> les lui rend. <code>+modlog</code> choisit le salon où publier chaque sanction.</p>
+<p>Pour automatiser : <code>+automod</code> et <code>+badword</code> filtrent les messages sans qu'un modérateur intervienne.</p></div></div>
+
+<div class="row"><h3>Sécurité</h3><div>
+<p><code>+security</code> ouvre le panneau des protections. Pour chacune, tu choisis la sanction : rien, derank, kick ou ban.</p>
+<ul>
+<li><b>Antiraid</b> repère beaucoup d'arrivées en peu de temps.</li>
+<li><b>Antibot</b> bloque l'ajout d'un bot sans ton accord.</li>
+<li><b>Antinuke</b> surveille ce qu'un compte à droits peut détruire (salons, rôles, bans en masse) et le sanctionne, même s'il est admin.</li>
+<li><b>Captcha</b> et <b>verification</b> : les nouveaux prouvent qu'ils sont humains.</li>
+</ul>
+<p>En urgence, <code>+lockdown</code> et <code>+raidmode</code> ferment le serveur en une commande. <code>+whitelist</code> protège tes comptes de confiance, <code>+audit</code> montre qui a changé quoi.</p></div></div>
+
+<div class="row"><h3>Tickets et modmail</h3><div>
+<p><code>+ticketpanel</code> pose un message avec un bouton : le membre clique, un salon privé s'ouvre avec le staff. On peut réclamer la demande, ajouter ou retirer quelqu'un, puis fermer. La transcription garde toute la conversation.</p>
+<p>Le <b>modmail</b> fait l'inverse : le membre écrit au bot en message privé, le staff répond depuis un salon. <code>+mmclose</code> clôt, <code>+mmblock</code> bloque un membre qui abuse.</p></div></div>
+
+<div class="row"><h3>Musique</h3><div>
+<p><code>+play</code> lance un titre ou une playlist depuis un lien ou un nom. Un panneau à boutons donne pause, suivant, boucle et mélange.</p>
+<p>Il y a une file d'attente (<code>+queue</code>), des playlists et des favoris, l'historique, les paroles (<code>+lyrics</code>), l'autoplay et le volume. Un rôle DJ réserve le contrôle à ceux que tu choisis.</p></div></div>
+
+<div class="row"><h3>Niveaux et invitations</h3><div>
+<p>Les membres gagnent de l'XP en discutant, et le bot compte aussi qui invite qui (<code>+invites</code>, <code>+invitereward</code> pour récompenser). <code>+levels</code> montre le niveau, <code>+top</code> le classement, <code>+levelrole</code> associe un rôle à un niveau. <code>+setxp</code> et <code>+resetxp</code> corrigent à la main.</p></div></div>
+
+<div class="row"><h3>Giveaways</h3><div>
+<p><code>+giveaway</code> lance le concours. Tu peux le mettre en pause (<code>+gpause</code>), le modifier (<code>+gedit</code>), le terminer plus tôt (<code>+gend</code>), ou relancer un tirage avec <code>+greroll</code> si le gagnant ne répond pas.</p></div></div>
+
+<div class="row"><h3>Boutique et vouch</h3><div>
+<p>Pour les serveurs de vente : chaque vendeur a un profil (<code>+profile</code>, <code>+bio</code>, <code>+setshop</code>), les clients laissent un avis avec <code>+vouch</code>, et <code>+vouchtop</code> classe les meilleurs.</p></div></div>
+
+<div class="row"><h3>Économie et jeux</h3><div>
+<p>Une monnaie virtuelle avec <code>+daily</code>, <code>+work</code>, <code>+shop</code>, <code>+inventory</code>, des enchères, des quêtes, de la pêche et de la chasse. Et du casino : <code>+slots</code>, <code>+blackjack</code>, <code>+roulette</code>, <code>+mines</code>, <code>+crash</code>, <code>+duel</code>. <code>+cointop</code> donne le classement.</p></div></div>
+
+<div class="row"><h3>Vocal</h3><div>
+<p>De quoi gérer les salons vocaux sans quitter le chat : <code>+vmute</code>, <code>+vkick</code>, <code>+vmove</code>, <code>+moveall</code>, <code>+vlock</code>, <code>+vlimit</code>, <code>+vrename</code>. <code>+vstats</code> et <code>+voctop</code> montrent le temps passé en vocal.</p></div></div>
+
+<div class="row"><h3>Alertes réseaux</h3><div>
+<p>Le bot prévient dans un salon quand un streamer est en live ou qu'une vidéo sort : <code>+twitch</code>, <code>+youtube</code>, <code>+tiktok</code>, <code>+kick</code>.</p></div></div>
+
+<div class="row"><h3>Identité et RP</h3><div>
+<p>Pour les serveurs de jeu de rôle : carte d'identité, permis, carte grise, amendes, plaintes, factures et virements entre joueurs.</p></div></div>
+
+<div class="row"><h3>Et aussi</h3><div>
+<p>Sondages, suggestions, confessions anonymes, jeux et interactions (<code>+hug</code>, <code>+ship</code>, <code>+rps</code>…), compteurs de salons, message épinglé qui revient en bas (<code>+sticky</code>), salons vocaux temporaires (<code>+tempvoc</code>), rôles de booster, rappels, traduction, citations, logs par catégorie.</p></div></div>
+</section>
+
+<section id="rangs">
+<h2>Rangs automatiques</h2>
+<p class="lead">« Actif » après 500 messages, « Fidèle » après 10 heures de vocal, sans que le staff y pense.</p>
+<p>Un rang, ce sont des seuils (messages, temps de vocal) et des rôles. Quand le membre atteint le seuil, le bot donne <b>et</b> retire tous les rôles du rang en un seul appel : jamais d'ancien et de nouveau rôle cumulés, jamais de membre sans rôle entre les deux.</p>
+<pre>+autorank add Actif 500 10h +@Actif -@Nouveau
++autorank add Fidèle 0 50h +@Fidèle
++autorank announce #annonces
++autorank on</pre>
+<p>Le premier rang demande 500 messages <b>et</b> 10 h de vocal. Le second ne regarde que le vocal (<code>0</code> = pas de condition). Ajoute <code>ou</code> dans la commande pour qu'une seule condition suffise. <code>+autorank</code> seul ouvre le panneau complet.</p>
+<div class="dc" style="max-width:26rem"><div class="m"><div class="n">Léa<i>membre</i></div><code>+myrank</code></div><div class="m"><div class="n">AK47<i>bot</i></div><div class="emb"><b>Progression de Léa</b><br><span class="bar">██████░░░░</span> 300/500 messages<br><span class="bar">████████░░</span> 8 h/10 h de vocal</div></div></div>
+<ul>
+<li>Les messages sont comptés <b>à partir de l'activation</b> ; le vocal reprend l'historique de <code>+vstats</code>. <code>+autorank check</code> rattrape les membres déjà éligibles.</li>
+<li>Un message compte à partir de 3 caractères, au plus un toutes les 10 secondes. Le salon AFK n'est pas compté.</li>
+<li>Un rang n'est donné qu'une fois : un rôle retiré à la main ensuite n'est pas redonné.</li>
+</ul>
+</section>
+
+<section id="faq">
+<h2>Questions fréquentes</h2>
+<details><summary>Le bot ne donne pas le rôle d'un rang.</summary><p>Son rôle doit être au-dessus de ceux du rang, il doit avoir « Gérer les rôles », et le rôle ne doit pas être géré par une intégration. Le panneau d'<code>+autorank</code> affiche le problème en bas ; ensuite <code>+autorank check</code> relance l'application.</p></details>
+<details><summary>Les messages d'avant l'activation comptent-ils ?</summary><p>Non pour les messages. Oui pour le vocal, qui reprend l'historique existant.</p></details>
+<details><summary>Un membre a perdu son rôle de rang et ne le récupère pas.</summary><p>C'est voulu. Redonne-le à la main, ou remets ses compteurs à zéro avec <code>+autorank reset @membre</code> pour qu'il refasse le parcours.</p></details>
+<details><summary>Qui peut utiliser les commandes ?</summary><p>Chaque commande de modération demande la permission Discord correspondante. <code>+permcreate</code> crée des niveaux de permissions pour ton staff. La catégorie Bot (<code>owner</code>, <code>buyer</code>, <code>bl</code>) est réservée aux propriétaires.</p></details>
+</section>
+
+<section id="commandes">
+<h2>Toutes les commandes (417)</h2>
+<div class="find"><input id="q" type="search" placeholder="Cherche : ban, ticket, play…" aria-label="Chercher une commande" autocomplete="off"><div id="chips" role="group" aria-label="Catégories"></div></div>
+<p id="count" aria-live="polite" style="color:var(--mute)"></p>
+<div id="out"></div>
+</section>
+</main>
+
+<footer><div class="w">AK47 · tout est fait par <b>Bazilik</b> · <a href="https://discord.gg/ak47bot" style="color:var(--yel)">discord.gg/ak47bot</a> pour le support et les questions.</div></footer>
+
+<script>
+const C={
+"Modération":"ban banlist case clear clear-auto clearwarns derank history jail kick modlog modstats mp mute mutelist nick notes purgeuser rerank softban staffstats tempban unban unjail unmute unwarn warn warns warnset",
+"Vocal":"moveall pull vban vbitrate vdeaf vjoin vkick vlimit vlock vmove vmute vmuteall voctop vregion vrename vstats vunban vundeaf vunlock vunmute vunmuteall",
+"Sécurité":"antibot antinuke antiraid audit captcha lockdown minage raidmode revokeinvites secur security verification whitelist wllist",
+"Rôles":"addrole autorank createrole delrole massiverole members myrank reactionrole removerole roleinfo rolemenu roles stickyrole unmassiverole verifypanel",
+"Listes":"allboosters allchannels allemojis allinvites allnew alloffline allonline allperms allroles allsoutien alltimeout allvoice allwarns allwebhooks",
+"Salons":"del hide lock lockall rename renew slowmode sync syncall topic unhide unlock unlockall",
+"Configuration":"afkvoc autodelete automod autoreact autorole autoslowmode backup badgelist badgeroles badgestats badword boostembed change config counter counting custom emoji ghostping jailconfig joinsettings leavesettings logs permcreate permission pplog pprandom prefix reponses rolenick setlogs setwelcome soutien statut stealemoji sticker sticky tempvoc testleave testwelcome vcstatus welcomecard welcomemsg",
+"Logs":"dellogs logstatus setuplogs",
+"Niveaux":"addinvite invitelist inviter invitereward invites levelrole levels rank removeinvite resetinvites resetxp setinvites setxp top",
+"Tickets et modmail":"areply close mmblock mmclose mmsettings mmunblock reply ticket ticketadd ticketlog ticketmove ticketpanel ticketremove ticketrename ticketstats unclaim",
+"Giveaway":"gdelete gedit gend giveaway glist gpause greroll gresume",
+"Suggestions et sondages":"candidature-panel candidature-settings confession confession-ban confession-delete confession-reveal confession-settings sondages suggest-accept suggest-deny suggestion suggestion-settings",
+"Boutique":"bio delvouch me profile set setshop vouch vouchbl vouchtop",
+"Économie et casino":"auction balance bet bid blackjack bounty buy coinadd coinconfig coinevent coinremove coinreset coinset cointop crash crime daily deposit dice duel fish heist hunt inventory itemconfig loan lottery message-coins mine mines monthly orders pay quete rob roulette sell shop shopconfig slots tax transactions use weekly withdraw work",
+"Musique":"247 autoplay fav filter grab history join leave loop lyrics nowplaying pause play playfav playlist playnext previous qclear qremove queue resume search seek shuffle skip skipto stop volume",
+"Fun":"bite countingtop cuddle divorce highfive hug joke kiss lick marry meme pat poke punch rps ship slap tictactoe",
+"Réseaux":"kick tiktok twitch youtube",
+"Identité et RP":"amende annonce annuaire anonyme anonyme-log banque-donner cartegrise casier-ajouter casier-retirer casier-rp compte facture factures fin-service id identite-panel identite-settings idphoto idremove idsearch payer permis permis-donner permis-retirer persos plainte plainte-statut plaintes rp-settings service service-stats services tel vehicule-ajouter vehicule-retirer virement",
+"Informations":"activity avatar banner botinfo channelinfo compare editsnipe emojiinfo find heatmap help inactifs invite joinstats lastseen membercount mystats ping prevname reactsnipe serverbanner servericon serverinfo snipe topactivity uptime userinfo vc vcalert vcrecord vcwho weeklyreport whatsnew",
+"Utilitaire":"8ball afk calc choose coinflip color crypto drop embed enlarge poll qrcode quote randomuser remind reminders roll say schedule support tag timestamp transcript translate weather",
+"Propriétaires":"backupinfo bl bllist botstatus buyer language leave owner owneradd ownerclear ownerlist ownerremove servers settings unbl usage"
+};
+const chips=document.getElementById('chips'),out=document.getElementById('out'),q=document.getElementById('q'),count=document.getElementById('count');
+let cat='';
+function draw(){
+ const t=q.value.trim().toLowerCase().replace(/^\+/,'');let n=0;out.textContent='';
+ for(const [k,v] of Object.entries(C)){if(cat&&cat!==k)continue;
+  for(const w of v.split(' ')){if(t&&!w.includes(t))continue;const s=document.createElement('span');s.textContent='+'+w;s.title=k;out.appendChild(s);n++}}
+ count.textContent=n?n+' commande'+(n>1?'s':''):'Aucune commande ne correspond.';
+}
+for(const k of ['Toutes',...Object.keys(C)]){const b=document.createElement('button');b.textContent=k;b.setAttribute('aria-pressed',k==='Toutes');
+ b.onclick=()=>{cat=k==='Toutes'?'':k;[...chips.children].forEach(c=>c.setAttribute('aria-pressed',c===b));draw()};chips.appendChild(b)}
+q.oninput=draw;draw();
+</script>
+</body>
+</html>
